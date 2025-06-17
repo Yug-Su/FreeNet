@@ -1,0 +1,13 @@
+CompileFlags: # Tweak the parse settings, example directory given to show format
+  Add:
+    - "-DPARANOIA=1"
+    - "-DIdentity_CHECK=1"
+    - "-DCJDNS_RAND_U64_PER_FILE=1"
+    - "-DHAS_ETH_INTERFACE=1"
+    - "-Wall"
+    - "-Wextra"
+
+Diagnostics:
+  Suppress:
+    - "pointer-sign"
+    - "sign-compare"

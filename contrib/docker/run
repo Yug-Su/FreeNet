@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+set -exuf
+
+# Usage:
+#   contrib/docker/run [<name>]
+#   docker exec -it cjdns[-<name>] cjdnslog
+#   docker exec -it cjdns[-<name>] peerStats
+#   docker exec -it cjdns[-<name>] sessionState
+#   docker exec -it cjdns[-<name>] dumptable
+#   docker exec -it cjdns[-<name>] <any-command-from-tools/>
+#   cat contrib/docker/cjdns[-<name>]/cjdroute.conf
+
+# Location of cjdroute.conf within the container
+CONF_DIR="/etc/cjdns"
+
+if [ -z "$1" ]; then
+  name="cjdns"
+else
+  name="cjdns-$1"
+fi
+
+docker build -f contrib/docker/Dockerfile -t "$name" .
+
+exec docker run -it --rm --name="$name" \
+                --cap-add=NET_ADMIN --device=/dev/net/tun \
+                --volume="$(pwd)/contrib/docker/$name:$CONF_DIR" "$name"
